@@ -1,0 +1,20 @@
+name: Deploy to Yandex Cloud
+on:
+  push:
+    branches: [ main ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy Function
+        uses: yc-actions/yc-function-deploy@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+          function-id: "d4ep2kajh852rnkroktg"
+          runtime: python311
+          entrypoint: index.handler
+          memory: 128mb
+          environment: |
+            VK_TOKEN=${{ secrets.VK_TOKEN }}
+            GCP_SA_JSON=${{ secrets.GCP_SA_JSON }}
