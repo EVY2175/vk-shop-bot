@@ -15,4 +15,4 @@ jobs:
         run: |
           source /home/runner/yandex-cloud/path.bash.inc
           yc config set service-account-key "$YC_SERVICE_ACCOUNT_KEY_FILE"
-          yc serverless function version create --function-name "ИМЯ_ВАШЕЙ_ФУНКЦИИ" --runtime python311 --entrypoint index.handler --memory 128mb --execution-timeout 5s --source-path . --environment VK_TOKEN=${{ secrets.VK_TOKEN }}
+          yc serverless function version create --function-name "test-gpt-function" --runtime python311 --entrypoint index.handler --memory 128mb --execution-timeout 5s --source-path . --environment VK_TOKEN=${{ secrets.VK_TOKEN }}
