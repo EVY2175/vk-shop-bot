@@ -7,14 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Deploy Function
-        uses: yc-actions/yc-function-deploy@v1
-        with:
-          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
-          function-id: "d4ep2kajh852rnkroktg"
-          runtime: python311
-          entrypoint: index.handler
-          memory: 128mb
-          environment: |
-            VK_TOKEN=${{ secrets.VK_TOKEN }}
-            GCP_SA_JSON=${{ secrets.GCP_SA_JSON }}
+      - name: Install YC CLI
+        run: curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+      - name: Deploy
+        env:
+          YC_SERVICE_ACCOUNT_KEY_FILE: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+        run: |
+          source /home/runner/yandex-cloud/path.bash.inc
+          yc config set service-account-key "$YC_SERVICE_ACCOUNT_KEY_FILE"
+          yc serverless function version create --function-name "ИМЯ_ВАШЕЙ_ФУНКЦИИ" --runtime python311 --entrypoint index.handler --memory 128mb --execution-timeout 5s --source-path . --environment VK_TOKEN=${{ secrets.VK_TOKEN }}
