@@ -1,4 +1,4 @@
-name: Deploy to Yandex Cloud
+name: Deploy
 on:
   push:
     branches: [ main ]
@@ -6,14 +6,21 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install YC CLI
         run: curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-      - name: Deploy
+      - name: Deploy to Yandex
         env:
           YC_SA_JSON: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
         run: |
           echo "$YC_SA_JSON" > key.json
           source /home/runner/yandex-cloud/path.bash.inc
           yc config set service-account-key key.json
-          yc serverless function version create --function-id "d4ep2kajh852rnkroktg" --runtime python311 --entrypoint index.handler --memory 128mb --execution-timeout 5s --source-path . --environment VK_TOKEN=${{ secrets.VK_TOKEN }}
+          yc serverless function version create \
+            --function-id d4ep2kajh852rnkroktg \
+            --runtime python311 \
+            --entrypoint index.handler \
+            --memory 128mb \
+            --execution-timeout 5s \
+            --source-path . \
+            --environment VK_TOKEN=${{ secrets.VK_TOKEN }}
