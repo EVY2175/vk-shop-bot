@@ -19,6 +19,7 @@ jobs:
           yc config set service-account-key key.json
           yc serverless function version create \
             --function-id "d4ep2kajh852rnkroktg" \
+            --service-account-id "ajel1jojc89c1b0edneh" \
             --runtime python311 \
             --entrypoint index.handler \
             --memory 128mb \
