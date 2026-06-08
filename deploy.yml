@@ -6,7 +6,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Install YC CLI
         run: curl https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
       - name: Deploy
@@ -16,7 +17,6 @@ jobs:
           echo "$YC_SA_JSON" > key.json
           source /home/runner/yandex-cloud/path.bash.inc
           yc config set service-account-key key.json
-          # «амени ID_‘”Ќ ÷»» на свой реальный ID из консоли яндекса
           yc serverless function version create \
             --function-id "d4ep2kajh852rnkroktg" \
             --runtime python311 \
